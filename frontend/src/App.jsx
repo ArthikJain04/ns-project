@@ -18,12 +18,9 @@ function App() {
     setResults(null)
     
     try {
-      // Automatically detect if running locally or on EC2 public IP
-      const backendUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
-        ? 'http://127.0.0.1:5000/api/scan' 
-        : `http://${window.location.hostname}:5000/api/scan`;
-        
-      const response = await axios.post(backendUrl, { url })
+      // Flask serves both the frontend (dist/) and the API on port 5000
+      // Use a relative path so it works both locally and on EC2
+      const response = await axios.post('/api/scan', { url })
       setResults(response.data)
     } catch (err) {
       console.error(err)
